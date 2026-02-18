@@ -1,4 +1,3 @@
-# cli.py
 import time
 import logging
 import sys
@@ -13,6 +12,8 @@ from .workflows.list_emulators import (
     detect_running_emulator_indexes,
     close_emulators_in_parallel,
 )
+
+from .core.emulator_tracking import mark_running_emulators_as_used
 
 from .config.config import LOG_FILE
 
@@ -47,6 +48,23 @@ def print_initial_stats():
     print(f"Emulators Failed: {stats.get('emulators_failed', 0)}")
     print(f"Batches Completed: {stats.get('batches_completed', 0)}")
     print("-"*80)
+
+def ensure_playwright_browsers():
+    """Check if Playwright browsers are installed; if not, install them."""
+    import subprocess
+    import sys
+    from pathlib import Path
+
+    browser_path = Path.home() / "AppData/Local/ms-playwright"
+    if not browser_path.exists() or not any(browser_path.iterdir()):
+        print("\n[PLAYWRIGHT] Browsers not found. Installing now...")
+        try:
+            subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
+            print("[PLAYWRIGHT] Installation complete.\n")
+        except subprocess.CalledProcessError:
+            print("\n[ERROR] Failed to install Playwright browsers. Please run manually:")
+            print("    playwright install chromium")
+            sys.exit(1)
 
 def main_loop():
     """Infinite batch processing loop."""
@@ -142,7 +160,9 @@ def final_cleanup():
 def main():
     """Main CLI entry point."""
     print_banner()
+    ensure_playwright_browsers()
     print_initial_stats()
+    mark_running_emulators_as_used()
     input("Press Enter to start automation (Ctrl+C to stop)...")
     try:
         main_loop()

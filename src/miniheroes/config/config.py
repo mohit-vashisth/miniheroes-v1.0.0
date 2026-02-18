@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 # ==================== PROJECT PATHS ====================
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 SRC_DIR = PROJECT_ROOT / "src"
 MINIHEROES_DIR = SRC_DIR / "miniheroes"
 DATA_DIR = MINIHEROES_DIR / "data"

@@ -1,9 +1,7 @@
 # taps_recorder.py
 from pathlib import Path
-from ..config.config import TAP_STEPS_FILE
 
-OUTPUT_FILE = Path(TAP_STEPS_FILE)
-OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+OUTPUT_FILE = r"E:\Github\miniheroes-v1.0.0\src\miniheroes\data\tap_steps.txt"
 
 # ---------------- DPI AWARE (MUST BE FIRST) ----------------
 try:

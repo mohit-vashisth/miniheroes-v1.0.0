@@ -46,3 +46,14 @@ def _load_indexes_from_file(file_path: Path) -> Set[int]:
             if value.isdigit():
                 indexes.add(int(value))
     return indexes
+
+def mark_running_emulators_as_used():
+    """Detect currently running emulators and mark them as used (if not already)."""
+    from .adb_utils import detect_running_emulator_indexes
+    running = detect_running_emulator_indexes()
+    used = get_used_emulator_indexes()
+    failed = get_failed_emulator_indexes()
+
+    for idx in running:
+        if idx not in used and idx not in failed:
+            save_used_emulator_index(idx)
