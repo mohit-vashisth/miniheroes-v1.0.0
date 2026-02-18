@@ -1,5 +1,4 @@
 # taps_recorder.py
-from pathlib import Path
 
 OUTPUT_FILE = r"E:\Github\miniheroes-v1.0.0\src\miniheroes\data\tap_steps.txt"
 

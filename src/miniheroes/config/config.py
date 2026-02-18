@@ -49,7 +49,7 @@ LOG_FILE = PROJECT_ROOT / "automation_log.txt"
 
 # ==================== GAME CONFIG ====================
 GAME_PACKAGE = "com.and.brawl.en"
-BASE_NAME = "2026thyear"  # email prefix
+BASE_NAME = "2wayroad"
 
 # ==================== APK FILES ====================
 APK_FILES = ["1.apk", "2.apk", "3.apk"]
@@ -67,7 +67,7 @@ def get_apk_paths() -> list[Path]:
 
 # ==================== BATCH CONFIG ====================
 BATCH_SIZE = 4
-MAX_EMULATORS = 10000
+MAX_EMULATORS = 999
 
 # ==================== TAP VERIFICATION ====================
 VERIFY_TAPS = False

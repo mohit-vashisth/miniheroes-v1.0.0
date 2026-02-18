@@ -53,7 +53,7 @@ def tap_player(port: int, email: str, run_number: int) -> bool:
     logger.info("[RUN %s] %s using %s", run_number, device_id, email)
 
     try:
-        launch_app_e(device_id, GAME_PACKAGE, wait=2.0)
+        launch_app_e(device_id, GAME_PACKAGE)
 
         pre_code_steps: List[tuple] = []
         for step in MODE1_STEPS:

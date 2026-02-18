@@ -42,7 +42,7 @@ def is_app_installed(device_id: str, package_name: str) -> bool:
         return False
 
 
-def launch_app_e(device_id: str, package: str, wait: float = 2.0):
+def launch_app_e(device_id: str, package: str, wait: float = 32.0):
     subprocess.run(
         [
             "adb",

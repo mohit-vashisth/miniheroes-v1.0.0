@@ -8,7 +8,6 @@ __pycache__/
 
 src/miniheroes/apk/
 
-
 # Distribution / packaging
 .Python
 build/
