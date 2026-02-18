@@ -24,18 +24,12 @@ from .workflows.list_emulators import (
 from .core.emulator_tracking import mark_running_emulators_as_used
 
 BANNER = """
-    Features Included:
-    1 Fully Automatic MiniHeroes: Magic Throne (Account Creation tool)
-       - Auto window hiding (off-screen positioning)
-       - Detailed tap logging with coordinates
-       - Parallel processing (4 emulators at once)
-       - Error recovery and retry logic
-       - Statistics tracking
-       - Auto-closing emulators after use
-       - Email verification code fetching
-       - APK installation checking
-       - Multi-method tap (dnconsole + adb fallback)
-       - Optional pixel tap verification (default OFF)
+    ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗
+    ██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝
+    ██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗
+    ██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝
+    ╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗
+    ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝
     """
 
 def print_banner():
@@ -173,7 +167,6 @@ def main():
         final_cleanup()
 
 if __name__ == "__main__":
-    # Logger already initialized at top, no need for extra basicConfig
     try:
         main()
     except Exception as e:

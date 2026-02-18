@@ -20,10 +20,10 @@ logger = log()
 def _run_tap_sequence(device_id: str, taps: List[tuple]) -> bool:
     """Execute a sequence of taps"""
     total_taps = len(taps)
-    logger.debug(f"[TAP SEQ] Starting {total_taps} taps on {device_id}")
+    logger.info(f"[TAP SEQ] Starting {total_taps} taps on {device_id}")
 
     for i, (x, y, wait_seconds) in enumerate(taps, 1):
-        logger.debug(f"[TAP SEQ] Tap {i}/{total_taps}: ({x}, {y}) wait={wait_seconds}s")
+        logger.info(f"[TAP] {device_id} - Tap {i}/{total_taps} at ({x}, {y}) - Wait {wait_seconds}s")
         ok = adb_tap(device_id, int(x), int(y), int(wait_seconds), LD_CONSOLE)
         time.sleep(float(wait_seconds))
         if not ok:
@@ -41,12 +41,14 @@ def _run_steps_with_adb_fallback(device_id: str, steps: List[tuple]) -> bool:
         logger.debug(f"[STEPS] Step {i}/{len(steps)}: {step}")
 
         if action == "wait":
-            time.sleep(float(step[1]))
+            wait_seconds = float(step[1])
+            logger.debug(f"[STEPS] Wait {wait_seconds}s on {device_id}")
+            time.sleep(wait_seconds)
             continue
 
         if action == "text":
             text = str(step[1])
-            logger.debug(f"[STEPS] Typing text on {device_id}")
+            logger.info(f"[TEXT] {device_id} - Typing: {text}")
             adb_type(device_id, text)
             continue
 
@@ -54,7 +56,7 @@ def _run_steps_with_adb_fallback(device_id: str, steps: List[tuple]) -> bool:
             x = int(step[1])
             y = int(step[2])
             wait_seconds = float(step[3]) if len(step) > 3 else 0.0
-            logger.debug(f"[STEPS] Tapping ({x}, {y}) on {device_id}")
+            logger.info(f"[TAP] {device_id} - Step tap at ({x}, {y}) - Wait {wait_seconds}s")
             adb_tap(device_id, x, y, int(wait_seconds), LD_CONSOLE)
             if wait_seconds > 0:
                 time.sleep(wait_seconds)
@@ -97,6 +99,10 @@ def tap_player(port: int, email: str, run_number: int) -> bool:
 
         logger.info(f"[RUN {run_number}] Got verification code: {code}")
 
+        # ✅ Mark email as used immediately to prevent reuse if script stops later
+        save_used_gmail(email)
+        logger.info(f"[RUN {run_number}] Marked {email} as used")
+
         # Enter code
         run_steps(device_id, [("text", code)], verbose=False)
         run_steps(device_id, [("wait", 2)], verbose=False)
@@ -105,8 +111,8 @@ def tap_player(port: int, email: str, run_number: int) -> bool:
         logger.info(f"[RUN {run_number}] Executing main game sequence")
         _run_tap_sequence(device_id, MAIN_SEQUENCE)
 
-        # Save email as used
-        save_used_gmail(email)
+        # (Optional) second save – but duplicates are handled in save_used_gmail
+        # save_used_gmail(email)  # already saved above
         logger.success(f"Run {run_number} completed successfully on {device_id}")
         return True
 

@@ -8,6 +8,7 @@ from typing import List
 
 from ..config.config import APK_FILES, APK_DIR, GAME_PACKAGE, get_apk_paths
 from ..core.logger import log
+from ..core.emulator_tracking import save_used_emulator_index   # <-- added import
 
 logger = log()
 
@@ -67,7 +68,7 @@ def is_app_installed(device_id: str, package_name: str) -> bool:
         return False
 
 
-def launch_app_e(device_id: str, package: str, wait: float = 32.0):
+def launch_app_e(device_id: str, package: str, wait: float = 3.0):
     """Launch app on device using monkey command"""
     logger.info(f"[LAUNCH] Launching {package} on {device_id} (wait {wait}s)")
 
@@ -99,13 +100,15 @@ def launch_app_e(device_id: str, package: str, wait: float = 32.0):
         time.sleep(wait)
 
 
-def install_apk_on_device(device_id: str) -> bool:
-    """Install APKs on a single device with error handling"""
-    logger.info(f"[INSTALL] Installing APKs on {device_id}")
+def install_apk_on_device(device_id: str, emulator_index: int) -> bool:
+    """Install APKs on a single device with error handling and mark emulator as used on success"""
+    logger.info(f"[INSTALL] Installing APKs on {device_id} for emulator {emulator_index}")
 
     try:
         install_split_apks(device_id)
-        logger.success(f"APK installation successful on {device_id}")
+        # Mark emulator as used immediately after successful installation
+        save_used_emulator_index(emulator_index)
+        logger.success(f"APK installation successful on {device_id}, emulator {emulator_index} marked used")
         return True
     except Exception as exc:
         logger.error(f"[INSTALL] Failed on {device_id}: {exc}")
@@ -128,11 +131,13 @@ def install_apks_in_parallel(indexes: List[int]) -> List[int]:
         # Check if already installed
         if is_app_installed(device_id, GAME_PACKAGE):
             logger.info(f"[INSTALL] Emulator {idx} already has {GAME_PACKAGE} installed")
+            # Optional: mark as used even if already installed (uncomment if desired)
+            # save_used_emulator_index(idx)
             return idx, True
 
         # Install APKs
         logger.info(f"[INSTALL] Installing on emulator {idx}")
-        success = install_apk_on_device(device_id)
+        success = install_apk_on_device(device_id, idx)   # <-- pass index
         return idx, success
 
     # Run installations in parallel
