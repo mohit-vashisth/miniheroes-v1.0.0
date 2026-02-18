@@ -1,0 +1,167 @@
+2026-02-18 15:56:53 - miniheroes - INFO - ================================================================================
+2026-02-18 15:56:53 - miniheroes - INFO - COMPLETE MULTI-EMULATOR AUTOMATION SCRIPT
+2026-02-18 15:56:53 - miniheroes - INFO - ================================================================================
+2026-02-18 15:56:53 - miniheroes - INFO - 
+    Features Included:
+    1 Fully Automatic MiniHeroes: Magic Throne (Account Creation tool)
+       - Auto window hiding (off-screen positioning)
+       - Detailed tap logging with coordinates
+       - Parallel processing (4 emulators at once)
+       - Error recovery and retry logic
+       - Statistics tracking
+       - Auto-closing emulators after use
+       - Email verification code fetching
+       - APK installation checking
+       - Multi-method tap (dnconsole + adb fallback)
+       - Optional pixel tap verification (default OFF)
+    
+2026-02-18 15:56:53 - miniheroes - INFO - 
+[INITIAL STATISTICS]
+2026-02-18 15:56:53 - miniheroes - INFO - Accounts Created: 0
+2026-02-18 15:56:53 - miniheroes - INFO - Emulators Used: 1
+2026-02-18 15:56:53 - miniheroes - INFO - Emulators Failed: 0
+2026-02-18 15:56:53 - miniheroes - INFO - Batches Completed: 0
+2026-02-18 15:56:53 - miniheroes - INFO - --------------------------------------------------------------------------------
+2026-02-18 15:56:53 - miniheroes - INFO - [TRACK] Checking for running emulators to mark as used
+2026-02-18 15:56:57 - miniheroes - INFO - [BATCH] Next batch: [1, 2, 3, 4] (full=True)
+2026-02-18 15:56:57 - miniheroes - INFO - ============================================================
+2026-02-18 15:56:57 - miniheroes - INFO - PROCESSING BATCH 1
+2026-02-18 15:56:57 - miniheroes - INFO - Emulators: [1, 2, 3, 4]
+2026-02-18 15:56:57 - miniheroes - INFO - ============================================================
+
+2026-02-18 15:56:57 - miniheroes - INFO - 
+2026-02-18 15:56:57 - miniheroes - INFO - [bold cyan]============================================================[/bold cyan]
+2026-02-18 15:56:57 - miniheroes - INFO - [bold cyan]                          BATCH 1                           [/bold cyan]
+2026-02-18 15:56:57 - miniheroes - INFO - [bold cyan]============================================================[/bold cyan]
+2026-02-18 15:56:57 - miniheroes - INFO - 
+2026-02-18 15:56:57 - miniheroes - INFO - Processing emulators: [1, 2, 3, 4]
+2026-02-18 15:56:57 - miniheroes - INFO - [bold yellow]▶ STEP 1:[/bold yellow] Starting emulators
+2026-02-18 15:56:57 - miniheroes - INFO - [START] Requested indexes: [1, 2, 3, 4]
+2026-02-18 15:56:57 - miniheroes - INFO - [START] Starting 4 emulator(s) in parallel with 4 workers
+2026-02-18 15:56:57 - miniheroes - INFO - [START] Launching emulator 1
+2026-02-18 15:56:57 - miniheroes - INFO - [START] Launching emulator 2
+2026-02-18 15:56:57 - miniheroes - INFO - [START] Launching emulator 3
+2026-02-18 15:56:57 - miniheroes - INFO - [START] Launching emulator 4
+2026-02-18 15:56:57 - miniheroes - INFO - [START] Waiting for emulator 1 to boot (port 5556)
+2026-02-18 15:56:57 - miniheroes - INFO - [START] Waiting for emulator 2 to boot (port 5558)
+2026-02-18 15:56:57 - miniheroes - INFO - [START] Waiting for emulator 3 to boot (port 5560)
+2026-02-18 15:56:57 - miniheroes - INFO - [START] Waiting for emulator 4 to boot (port 5562)
+2026-02-18 15:56:57 - miniheroes - INFO - [BOOT WAIT] emulator-5558 attempt 1/40
+2026-02-18 15:56:57 - miniheroes - INFO - [BOOT WAIT] emulator-5556 attempt 1/40
+2026-02-18 15:56:57 - miniheroes - INFO - [BOOT WAIT] emulator-5562 attempt 1/40
+2026-02-18 15:56:57 - miniheroes - INFO - [BOOT WAIT] emulator-5560 attempt 1/40
+2026-02-18 15:57:09 - miniheroes - INFO - [BOOT] emulator-5562 ready
+2026-02-18 15:57:09 - miniheroes - INFO - [HIDE] Attempting to hide emulator 4
+2026-02-18 15:57:09 - miniheroes - INFO - [BOOT] emulator-5556 ready
+2026-02-18 15:57:09 - miniheroes - INFO - [HIDE] Attempting to hide emulator 1
+2026-02-18 15:57:09 - miniheroes - INFO - [BOOT] emulator-5558 ready
+2026-02-18 15:57:09 - miniheroes - INFO - [HIDE] Attempting to hide emulator 2
+2026-02-18 15:57:09 - miniheroes - INFO - [BOOT] emulator-5560 ready
+2026-02-18 15:57:09 - miniheroes - INFO - [HIDE] Attempting to hide emulator 3
+2026-02-18 15:57:09 - miniheroes - INFO - [HIDE] emulator 4 modify command succeeded
+2026-02-18 15:57:09 - miniheroes - INFO - [bold green]✓[/bold green] Emulator 4 started and booted successfully
+2026-02-18 15:57:09 - miniheroes - INFO - [dim]Progress: 1/4 (25.0%)[/dim] Emulator 4
+2026-02-18 15:57:09 - miniheroes - INFO - [HIDE] emulator 2 modify command succeeded
+2026-02-18 15:57:09 - miniheroes - INFO - [bold green]✓[/bold green] Emulator 2 started and booted successfully
+2026-02-18 15:57:09 - miniheroes - INFO - [dim]Progress: 2/4 (50.0%)[/dim] Emulator 2
+2026-02-18 15:57:09 - miniheroes - INFO - [HIDE] emulator 1 modify command succeeded
+2026-02-18 15:57:09 - miniheroes - INFO - [bold green]✓[/bold green] Emulator 1 started and booted successfully
+2026-02-18 15:57:09 - miniheroes - INFO - [dim]Progress: 3/4 (75.0%)[/dim] Emulator 1
+2026-02-18 15:57:10 - miniheroes - INFO - [HIDE] emulator 3 modify command succeeded
+2026-02-18 15:57:10 - miniheroes - INFO - [bold green]✓[/bold green] Emulator 3 started and booted successfully
+2026-02-18 15:57:10 - miniheroes - INFO - [dim]Progress: 4/4 (100.0%)[/dim] Emulator 3
+2026-02-18 15:57:10 - miniheroes - INFO - [START] Results: 4 successful, 0 failed
+2026-02-18 15:57:10 - miniheroes - INFO - [bold green]✓[/bold green] Successfully started: [4, 2, 1, 3]
+2026-02-18 15:57:10 - miniheroes - INFO - [BATCH] Started 4/4 emulators: [4, 2, 1, 3]
+2026-02-18 15:57:10 - miniheroes - INFO - [bold yellow]▶ STEP 2:[/bold yellow] Installing APKs
+2026-02-18 15:57:10 - miniheroes - INFO - [INSTALL] Starting parallel installation on 4 emulators: [4, 2, 1, 3]
+2026-02-18 15:57:10 - miniheroes - INFO - [INSTALL] Using 4 parallel workers
+2026-02-18 15:57:10 - miniheroes - INFO - [INSTALL] Emulator 1 already has com.and.brawl.en installed
+2026-02-18 15:57:10 - miniheroes - INFO - [dim]Progress: 1/4 (25.0%)[/dim] Emulator 1 ✓
+2026-02-18 15:57:10 - miniheroes - INFO - [INSTALL] Emulator 2 already has com.and.brawl.en installed
+2026-02-18 15:57:10 - miniheroes - INFO - [INSTALL] Emulator 4 already has com.and.brawl.en installed
+2026-02-18 15:57:10 - miniheroes - INFO - [dim]Progress: 2/4 (50.0%)[/dim] Emulator 2 ✓
+2026-02-18 15:57:10 - miniheroes - INFO - [dim]Progress: 3/4 (75.0%)[/dim] Emulator 4 ✓
+2026-02-18 15:57:10 - miniheroes - INFO - [INSTALL] Emulator 3 already has com.and.brawl.en installed
+2026-02-18 15:57:10 - miniheroes - INFO - [dim]Progress: 4/4 (100.0%)[/dim] Emulator 3 ✓
+2026-02-18 15:57:10 - miniheroes - INFO - [bold green]✓[/bold green] APK installation successful on all 4 emulators
+2026-02-18 15:57:10 - miniheroes - INFO - [BATCH] APK install successful on 4 emulators: [4, 2, 1, 3]
+2026-02-18 15:57:10 - miniheroes - INFO - [bold yellow]▶ STEP 3:[/bold yellow] Generating emails
+2026-02-18 15:57:10 - miniheroes - INFO - [ACCOUNTS] No used emails, starting index = 1
+2026-02-18 15:57:10 - miniheroes - INFO - [MAILBOX] Generated 16 mailboxes from 2wayroad1@maildrop.cc to 2wayroad16@maildrop.cc
+2026-02-18 15:57:10 - miniheroes - INFO - [EMAIL] Generated 16 fresh emails with base '2wayroad', starting from index 1
+2026-02-18 15:57:10 - miniheroes - INFO - [BATCH] Generated 16 emails for 4 emulators
+2026-02-18 15:57:10 - miniheroes - INFO - [bold yellow]▶ STEP 4:[/bold yellow] Running emulator cycles in parallel
+2026-02-18 15:57:10 - miniheroes - INFO - [BATCH] Using 4 parallel workers
+2026-02-18 15:57:10 - miniheroes - INFO - 
+2026-02-18 15:57:10 - miniheroes - INFO - [bold cyan]============================================================[/bold cyan]
+2026-02-18 15:57:10 - miniheroes - INFO - [bold cyan]                         Emulator 4                         [/bold cyan]
+2026-02-18 15:57:10 - miniheroes - INFO - [bold cyan]============================================================[/bold cyan]
+2026-02-18 15:57:10 - miniheroes - INFO - 
+2026-02-18 15:57:10 - miniheroes - INFO - Processing emulator 4 on emulator-5562 with 4 emails
+2026-02-18 15:57:10 - miniheroes - INFO - 
+2026-02-18 15:57:10 - miniheroes - INFO - [bold cyan]============================================================[/bold cyan]
+2026-02-18 15:57:10 - miniheroes - INFO - 
+2026-02-18 15:57:10 - miniheroes - INFO - 
+2026-02-18 15:57:10 - miniheroes - INFO - [bold cyan]============================================================[/bold cyan]
+2026-02-18 15:57:10 - miniheroes - INFO - [bold cyan]============================================================[/bold cyan]
+2026-02-18 15:57:10 - miniheroes - INFO - [bold cyan]                         Emulator 2                         [/bold cyan]
+2026-02-18 15:57:10 - miniheroes - INFO - [bold cyan]                         Emulator 1                         [/bold cyan]
+2026-02-18 15:57:10 - miniheroes - INFO - [bold cyan]============================================================[/bold cyan]
+2026-02-18 15:57:10 - miniheroes - INFO - 
+2026-02-18 15:57:10 - miniheroes - INFO - Processing emulator 1 on emulator-5556 with 4 emails
+2026-02-18 15:57:10 - miniheroes - INFO - [bold cyan]============================================================[/bold cyan]
+2026-02-18 15:57:10 - miniheroes - INFO - 
+2026-02-18 15:57:10 - miniheroes - INFO - Processing emulator 2 on emulator-5558 with 4 emails
+2026-02-18 15:57:10 - miniheroes - INFO - [bold cyan]                         Emulator 3                         [/bold cyan]
+2026-02-18 15:57:10 - miniheroes - INFO - [bold cyan]============================================================[/bold cyan]
+2026-02-18 15:57:10 - miniheroes - INFO - 
+2026-02-18 15:57:10 - miniheroes - INFO - Processing emulator 3 on emulator-5560 with 4 emails
+2026-02-18 15:57:10 - miniheroes - INFO - [EMU] Starting run 1/4 on emulator 4
+2026-02-18 15:57:10 - miniheroes - INFO - [EMU] Starting run 1/4 on emulator 1
+2026-02-18 15:57:10 - miniheroes - INFO - [EMU] Starting run 1/4 on emulator 3
+2026-02-18 15:57:10 - miniheroes - INFO - [EMU] Starting run 1/4 on emulator 2
+2026-02-18 15:57:11 - miniheroes - INFO - [CLEAR] emulator-5558 com.and.brawl.en
+2026-02-18 15:57:11 - miniheroes - INFO - [CLEAR] emulator-5562 com.and.brawl.en
+2026-02-18 15:57:11 - miniheroes - INFO - [CLEAR] emulator-5560 com.and.brawl.en
+2026-02-18 15:57:11 - miniheroes - INFO - [CLEAR] emulator-5556 com.and.brawl.en
+2026-02-18 15:57:13 - miniheroes - INFO - [RUN 1/4] Starting on emulator-5558 with email: 2wayroad5@maildrop.cc
+2026-02-18 15:57:13 - miniheroes - INFO - [LAUNCH] Launching com.and.brawl.en on emulator-5558 (wait 32.0s)
+2026-02-18 15:57:13 - miniheroes - INFO - [RUN 1/4] Starting on emulator-5562 with email: 2wayroad1@maildrop.cc
+2026-02-18 15:57:13 - miniheroes - INFO - [LAUNCH] Launching com.and.brawl.en on emulator-5562 (wait 32.0s)
+2026-02-18 15:57:13 - miniheroes - INFO - [RUN 1/4] Starting on emulator-5560 with email: 2wayroad13@maildrop.cc
+2026-02-18 15:57:13 - miniheroes - INFO - [LAUNCH] Launching com.and.brawl.en on emulator-5560 (wait 32.0s)
+2026-02-18 15:57:13 - miniheroes - INFO - [RUN 1/4] Starting on emulator-5556 with email: 2wayroad9@maildrop.cc
+2026-02-18 15:57:13 - miniheroes - INFO - [LAUNCH] Launching com.and.brawl.en on emulator-5556 (wait 32.0s)
+2026-02-18 15:58:27 - miniheroes - INFO - [RUN 1] Waiting for verification code from 2wayroad5@maildrop.cc
+2026-02-18 15:58:27 - miniheroes - INFO - [CODE] Fetching verification code for 2wayroad5@maildrop.cc (max wait 40s)
+2026-02-18 15:58:27 - miniheroes - INFO - [CODE] Attempt 1 for 2wayroad5@maildrop.cc (timeout 10s)
+2026-02-18 15:58:27 - miniheroes - INFO - [CODE] Fetching verification code for 2wayroad5@maildrop.cc (timeout 10s)
+2026-02-18 15:58:27 - miniheroes - INFO - [RUN 1] Waiting for verification code from 2wayroad1@maildrop.cc
+2026-02-18 15:58:27 - miniheroes - INFO - [CODE] Fetching verification code for 2wayroad1@maildrop.cc (max wait 40s)
+2026-02-18 15:58:27 - miniheroes - INFO - [CODE] Attempt 1 for 2wayroad1@maildrop.cc (timeout 10s)
+2026-02-18 15:58:27 - miniheroes - INFO - [CODE] Fetching verification code for 2wayroad1@maildrop.cc (timeout 10s)
+2026-02-18 15:58:27 - miniheroes - INFO - [RUN 1] Waiting for verification code from 2wayroad13@maildrop.cc
+2026-02-18 15:58:27 - miniheroes - INFO - [CODE] Fetching verification code for 2wayroad13@maildrop.cc (max wait 40s)
+2026-02-18 15:58:27 - miniheroes - INFO - [CODE] Attempt 1 for 2wayroad13@maildrop.cc (timeout 10s)
+2026-02-18 15:58:27 - miniheroes - INFO - [CODE] Fetching verification code for 2wayroad13@maildrop.cc (timeout 10s)
+2026-02-18 15:58:27 - miniheroes - INFO - [RUN 1] Waiting for verification code from 2wayroad9@maildrop.cc
+2026-02-18 15:58:27 - miniheroes - INFO - [CODE] Fetching verification code for 2wayroad9@maildrop.cc (max wait 40s)
+2026-02-18 15:58:27 - miniheroes - INFO - [CODE] Attempt 1 for 2wayroad9@maildrop.cc (timeout 10s)
+2026-02-18 15:58:27 - miniheroes - INFO - [CODE] Fetching verification code for 2wayroad9@maildrop.cc (timeout 10s)
+2026-02-18 15:58:33 - miniheroes - INFO - [bold green]✓[/bold green] Found code itqw in iframe srcdoc
+2026-02-18 15:58:33 - miniheroes - INFO - [bold green]✓[/bold green] Found code vbe1 in iframe srcdoc
+2026-02-18 15:58:33 - miniheroes - INFO - [bold green]✓[/bold green] Successfully fetched code vbe1 for 2wayroad5@maildrop.cc
+2026-02-18 15:58:33 - miniheroes - INFO - [bold green]✓[/bold green] Successfully fetched code itqw for 2wayroad1@maildrop.cc
+2026-02-18 15:58:33 - miniheroes - INFO - [RUN 1] Got verification code: vbe1
+2026-02-18 15:58:33 - miniheroes - INFO - [RUN 1] Got verification code: itqw
+2026-02-18 15:58:34 - miniheroes - INFO - [bold green]✓[/bold green] Found code i3nu in iframe srcdoc
+2026-02-18 15:58:34 - miniheroes - INFO - [bold green]✓[/bold green] Found code 5c2x in iframe srcdoc
+2026-02-18 15:58:34 - miniheroes - INFO - [bold green]✓[/bold green] Successfully fetched code i3nu for 2wayroad9@maildrop.cc
+2026-02-18 15:58:34 - miniheroes - INFO - [RUN 1] Got verification code: i3nu
+2026-02-18 15:58:34 - miniheroes - INFO - [bold green]✓[/bold green] Successfully fetched code 5c2x for 2wayroad13@maildrop.cc
+2026-02-18 15:58:34 - miniheroes - INFO - [RUN 1] Got verification code: 5c2x
+2026-02-18 15:58:35 - miniheroes - INFO - [RUN 1] Executing main game sequence
+2026-02-18 15:58:35 - miniheroes - INFO - [RUN 1] Executing main game sequence
+2026-02-18 15:58:36 - miniheroes - INFO - [RUN 1] Executing main game sequence
+2026-02-18 15:58:36 - miniheroes - INFO - [RUN 1] Executing main game sequence
