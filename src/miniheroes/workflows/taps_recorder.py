@@ -152,7 +152,7 @@ def on_click(x, y, button, pressed):
         if last_tap_time is None:
             wait_before = 0
         else:
-            wait_before = math.ceil(now - last_tap_time)
+            wait_before = round(now - last_tap_time, 2)
 
         last_tap_time = now
 
@@ -161,7 +161,7 @@ def on_click(x, y, button, pressed):
 # ---------------- MAIN ----------------
 def main():
     print("🎯 LDPlayer Tap Recorder STARTED")
-    print("✔ WAIT → TAP model (ceil timing)")
+    print("✔ WAIT → TAP model (exact timing)")
     print("✔ DPI-safe & client-area accurate")
     print("✔ Only ACTIVE LDPlayer window")
     print("✔ Ctrl = pause recording")

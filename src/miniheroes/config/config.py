@@ -49,7 +49,7 @@ LOG_FILE = PROJECT_ROOT / "automation_log.txt"
 
 # ==================== GAME CONFIG ====================
 GAME_PACKAGE = "com.and.brawl.en"
-BASE_NAME = "3wayroad"
+BASE_NAME = "9wayroad"
 
 # ==================== APK FILES ====================
 APK_FILES = ["1.apk", "2.apk", "3.apk"]
