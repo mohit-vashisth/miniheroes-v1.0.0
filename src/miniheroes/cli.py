@@ -19,9 +19,13 @@ from .workflows.batch import (
 from .workflows.list_emulators import (
     detect_running_emulator_indexes,
     close_emulators_in_parallel,
+    delete_emulators_in_parallel
 )
-
-from .core.emulator_tracking import mark_running_emulators_as_used
+from .core.emulator_tracking import (
+    get_used_emulator_indexes,
+    mark_running_emulators_as_used
+)
+from .config.config import DELETE_USED_EMULATORS, IGNORED_EMULATORS
 
 BANNER = """
     ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗
@@ -133,7 +137,7 @@ def main_loop():
             time.sleep(30)
 
 def final_cleanup():
-    """Close any remaining emulators and show final stats."""
+    """Close any remaining emulators, delete used ones, and show final stats."""
     logger.info("="*80)
     logger.info("SCRIPT FINISHED")
     logger.info("="*80)
@@ -144,11 +148,29 @@ def final_cleanup():
     logger.info(f"Total Emulators Used: {stats.get('emulators_used', 0)}")
     logger.info(f"Total Emulators Failed: {stats.get('emulators_failed', 0)}")
 
-    # Cleanup
+    # Cleanup: close running emulators
     logger.info("[CLEANUP] Closing any remaining emulators...")
     running = detect_running_emulator_indexes()
     if running:
         close_emulators_in_parallel(running)
+
+    # Delete used emulators (if enabled)
+    if DELETE_USED_EMULATORS:
+        used_emus = get_used_emulator_indexes()
+        # Filter out ignored emulators
+        emus_to_delete = [idx for idx in used_emus if idx not in IGNORED_EMULATORS]
+        ignored = [idx for idx in used_emus if idx in IGNORED_EMULATORS]
+
+        if ignored:
+            logger.info(f"[CLEANUP] Ignored {len(ignored)} emulators (in IGNORED_EMULATORS list): {ignored}")
+
+        if emus_to_delete:
+            logger.info(f"[CLEANUP] Deleting {len(emus_to_delete)} used emulators to free disk space...")
+            delete_emulators_in_parallel(emus_to_delete)
+        else:
+            logger.info("[CLEANUP] No used emulators to delete (all ignored).")
+    else:
+        logger.info("[CLEANUP] Deletion of used emulators is disabled (DELETE_USED_EMULATORS=False).")
 
     logger.success("Script completed successfully!")
     logger.info(f"Log file: {LOG_FILE}")

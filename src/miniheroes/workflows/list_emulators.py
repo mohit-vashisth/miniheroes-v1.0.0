@@ -369,3 +369,28 @@ def close_emulators_in_parallel(indexes: List[int]):
 
     logger.success(f"Closed {len(indexes)} emulator(s)")
     time.sleep(3)  # Wait for resources to free
+
+def delete_emulator_by_index(index: int) -> bool:
+    """Delete a single emulator by its index"""
+    logger.info(f"[DELETE] Attempting to delete emulator {index}")
+    try:
+        result = subprocess.run(
+            [LD_CONSOLE, "remove", "--index", str(index)],
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+        if result.returncode == 0:
+            logger.success(f"Emulator {index} deleted successfully")
+            return True
+        else:
+            logger.error(f"Failed to delete emulator {index}: {result.stderr}")
+            return False
+    except Exception as e:
+        logger.error(f"Error deleting emulator {index}: {e}")
+        return False
+
+def delete_emulators_in_parallel(indexes: List[int]):
+    """Delete multiple emulators in parallel"""
+    with ThreadPoolExecutor(max_workers=len(indexes)) as executor:
+        executor.map(delete_emulator_by_index, indexes)

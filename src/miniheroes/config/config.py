@@ -49,7 +49,7 @@ LOG_FILE = PROJECT_ROOT / "automation_log.txt"
 
 # ==================== GAME CONFIG ====================
 GAME_PACKAGE = "com.and.brawl.en"
-BASE_NAME = "9wayroad"
+BASE_NAME = "318server"
 
 # ==================== APK FILES ====================
 APK_FILES = ["1.apk", "2.apk", "3.apk"]
@@ -66,8 +66,12 @@ def get_apk_paths() -> list[Path]:
     return primary_paths
 
 # ==================== BATCH CONFIG ====================
-BATCH_SIZE = 4
+BATCH_SIZE = 6
 MAX_EMULATORS = 999
+
+# ==================== BATCH CONFIG ====================
+DELETE_USED_EMULATORS = True
+IGNORED_EMULATORS = [0, 1]
 
 # ==================== TAP VERIFICATION ====================
 VERIFY_TAPS = False
