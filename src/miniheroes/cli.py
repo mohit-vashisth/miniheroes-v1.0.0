@@ -27,6 +27,10 @@ from .core.emulator_tracking import (
 )
 from .config.config import DELETE_USED_EMULATORS, IGNORED_EMULATORS
 
+# Global tracking of emulators launched by this script
+script_launched_emulators = set()
+_interrupted = False
+
 BANNER = """
     ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗
     ██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝
@@ -69,6 +73,7 @@ def ensure_playwright_browsers():
 
 def main_loop():
     """Infinite batch processing loop."""
+    global script_launched_emulators, _interrupted
     batch_number = 1
     consecutive_failures = 0
 
@@ -91,8 +96,9 @@ def main_loop():
             logger.info(f"Emulators: {batch_indexes}")
             logger.info(f"{'='*60}\n")
 
-            # Process batch
-            success = process_batch(batch_indexes, batch_number)
+            # Process batch – returns success flag and list of newly launched emulators
+            success, newly_launched = process_batch(batch_indexes, batch_number)
+            script_launched_emulators.update(newly_launched)
 
             if success:
                 logger.success(f"BATCH {batch_number} COMPLETED SUCCESSFULLY")
@@ -129,6 +135,7 @@ def main_loop():
 
         except KeyboardInterrupt:
             logger.info("\n[STOPPED] User interrupted")
+            _interrupted = True
             break
         except Exception as e:
             logger.error(f"[CRITICAL ERROR] {e}")
@@ -137,7 +144,8 @@ def main_loop():
             time.sleep(30)
 
 def final_cleanup():
-    """Close any remaining emulators, delete used ones, and show final stats."""
+    """Close any script‑launched emulators, delete used ones (if not interrupted), show final stats."""
+    global script_launched_emulators, _interrupted
     logger.info("="*80)
     logger.info("SCRIPT FINISHED")
     logger.info("="*80)
@@ -148,14 +156,15 @@ def final_cleanup():
     logger.info(f"Total Emulators Used: {stats.get('emulators_used', 0)}")
     logger.info(f"Total Emulators Failed: {stats.get('emulators_failed', 0)}")
 
-    # Cleanup: close running emulators
-    logger.info("[CLEANUP] Closing any remaining emulators...")
-    running = detect_running_emulator_indexes()
-    if running:
-        close_emulators_in_parallel(running)
+    # Close only the emulators that were launched by this script
+    if script_launched_emulators:
+        logger.info(f"[CLEANUP] Closing {len(script_launched_emulators)} script‑launched emulators...")
+        close_emulators_in_parallel(list(script_launched_emulators))
+    else:
+        logger.info("[CLEANUP] No script‑launched emulators to close.")
 
-    # Delete used emulators (if enabled)
-    if DELETE_USED_EMULATORS:
+    # Delete used emulators only if not interrupted and enabled
+    if not _interrupted and DELETE_USED_EMULATORS:
         used_emus = get_used_emulator_indexes()
         # Filter out ignored emulators
         emus_to_delete = [idx for idx in used_emus if idx not in IGNORED_EMULATORS]
@@ -170,7 +179,10 @@ def final_cleanup():
         else:
             logger.info("[CLEANUP] No used emulators to delete (all ignored).")
     else:
-        logger.info("[CLEANUP] Deletion of used emulators is disabled (DELETE_USED_EMULATORS=False).")
+        if _interrupted:
+            logger.info("[CLEANUP] Skipping deletion because script was interrupted.")
+        else:
+            logger.info("[CLEANUP] Deletion of used emulators is disabled (DELETE_USED_EMULATORS=False).")
 
     logger.success("Script completed successfully!")
     logger.info(f"Log file: {LOG_FILE}")

@@ -66,7 +66,7 @@ def get_apk_paths() -> list[Path]:
     return primary_paths
 
 # ==================== BATCH CONFIG ====================
-BATCH_SIZE = 6
+BATCH_SIZE = 4
 MAX_EMULATORS = 999
 
 # ==================== BATCH CONFIG ====================

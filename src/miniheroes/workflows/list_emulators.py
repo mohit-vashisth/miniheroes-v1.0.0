@@ -3,8 +3,9 @@ from __future__ import annotations
 import subprocess
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union, Tuple
 
+from ..core.emulator_tracking import remove_emulator_index
 from ..config.config import LD_CONSOLE, LDPLAYER_INDEXES_FILE
 from ..core.adb_utils import detect_running_emulator_indexes, wait_for_emulator_boot
 from ..core.emulator_tracking import get_failed_emulator_indexes, save_failed_emulator_index
@@ -130,6 +131,12 @@ def _ldconsole_list2() -> List[Dict]:
     return emulators
 
 
+def emulator_exists(index: int) -> bool:
+    """Check if emulator with given index exists (via ldconsole list2)."""
+    emus = _ldconsole_list2()
+    return any(int(emu["index"]) == index for emu in emus)
+
+
 def get_all_ldplayer_emulators() -> List[Dict]:
     """Get all LDPlayer emulators"""
     return _ldconsole_list2()
@@ -246,32 +253,33 @@ def list_emulator_indices() -> List[int]:
     return indices
 
 
-def start_and_wait_for_emulators(indexes: List[int]) -> Dict[int, bool]:
-    """Start emulators and wait for them to boot"""
+def start_and_wait_for_emulators(indexes: List[int]) -> Tuple[Dict[int, bool], List[int]]:
+    """
+    Start emulators and wait for them to boot.
+    Returns:
+        - dict: index -> success (True if running/booted)
+        - list: indexes of emulators that were newly launched (not already running)
+    """
     logger.info(f"[START] Requested indexes: {indexes}")
     if not indexes:
-        logger.warning("[START] No indexes provided")
-        return {}
+        return {}, []
 
     failed_indexes = get_failed_emulator_indexes()
     running_indexes = set(detect_running_emulator_indexes())
-
-    logger.debug(f"[START] Already running: {sorted(running_indexes)}")
-    logger.debug(f"[START] Failed list: {sorted(failed_indexes)}")
-
     results: Dict[int, bool] = {}
+    newly_launched: List[int] = []
 
-    def _start_single(idx: int) -> bool:
+    def _start_single(idx: int) -> Tuple[int, bool, bool]:
         logger.debug(f"[START] Processing emulator {idx}")
 
         if idx in failed_indexes:
             logger.warning(f"[START] Emulator {idx} skipped (in failed list)")
-            return False
+            return idx, False, False
 
         if idx in running_indexes:
             logger.info(f"[START] Emulator {idx} already running")
             hide_emulator_window(idx, LD_CONSOLE)
-            return True
+            return idx, True, False
 
         # Launch the emulator
         logger.info(f"[START] Launching emulator {idx}")
@@ -284,7 +292,7 @@ def start_and_wait_for_emulators(indexes: List[int]) -> Dict[int, bool]:
         except Exception as exc:
             logger.error(f"[START] Launch failed for emulator {idx}: {exc}")
             save_failed_emulator_index(idx)
-            return False
+            return idx, False, False
 
         # Wait for boot
         port = 5554 + (idx * 2)
@@ -299,12 +307,11 @@ def start_and_wait_for_emulators(indexes: List[int]) -> Dict[int, bool]:
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
             )
-            return False
+            return idx, False, False
 
-        # Hide window after successful boot
         hide_emulator_window(idx, LD_CONSOLE)
         logger.success(f"Emulator {idx} started and booted successfully")
-        return True
+        return idx, True, True
 
     # Start emulators in parallel
     max_workers = max(1, min(len(indexes), 8))
@@ -318,7 +325,10 @@ def start_and_wait_for_emulators(indexes: List[int]) -> Dict[int, bool]:
             completed += 1
             idx = future_map[future]
             try:
-                results[idx] = bool(future.result())
+                idx_result, success, new_flag = future.result()
+                results[idx] = success
+                if new_flag:
+                    newly_launched.append(idx)
             except Exception as exc:
                 logger.error(f"[START] Unexpected error for emulator {idx}: {exc}")
                 results[idx] = False
@@ -333,7 +343,7 @@ def start_and_wait_for_emulators(indexes: List[int]) -> Dict[int, bool]:
     if failed:
         logger.fail(f"Failed to start: {failed}")
 
-    return results
+    return results, newly_launched
 
 
 def close_emulators_in_parallel(indexes: List[int]):
@@ -370,8 +380,9 @@ def close_emulators_in_parallel(indexes: List[int]):
     logger.success(f"Closed {len(indexes)} emulator(s)")
     time.sleep(3)  # Wait for resources to free
 
+
 def delete_emulator_by_index(index: int) -> bool:
-    """Delete a single emulator by its index"""
+    """Delete a single emulator by its index and remove from tracking files."""
     logger.info(f"[DELETE] Attempting to delete emulator {index}")
     try:
         result = subprocess.run(
@@ -382,13 +393,24 @@ def delete_emulator_by_index(index: int) -> bool:
         )
         if result.returncode == 0:
             logger.success(f"Emulator {index} deleted successfully")
+            remove_emulator_index(index)
+            delete_index(str(index))          # also remove from ldplayer_indexes.txt
             return True
         else:
-            logger.error(f"Failed to delete emulator {index}: {result.stderr}")
-            return False
+            # Agar error "not exist" / "not found" hai to emulator already missing hai
+            err = result.stderr.lower()
+            if "not exist" in err or "not found" in err:
+                logger.warning(f"Emulator {index} does not exist, removing from tracking")
+                remove_emulator_index(index)
+                delete_index(str(index))      # clean up master list too
+                return True
+            else:
+                logger.error(f"Failed to delete emulator {index}: {result.stderr}")
+                return False
     except Exception as e:
         logger.error(f"Error deleting emulator {index}: {e}")
         return False
+
 
 def delete_emulators_in_parallel(indexes: List[int]):
     """Delete multiple emulators in parallel"""

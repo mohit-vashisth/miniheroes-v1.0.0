@@ -1,3 +1,4 @@
+# emulator_tacking.py
 from __future__ import annotations
 
 import threading
@@ -81,3 +82,29 @@ def mark_running_emulators_as_used():
         logger.success(f"Marked {marked} running emulator(s) as used")
     else:
         logger.debug("[TRACK] No new running emulators to mark")
+
+def remove_emulator_index(index: int):
+    """Remove an index from both used and failed files (after emulator deletion)."""
+    # Remove from used file
+    used_path = Path(USED_EMU_FILE)
+    if used_path.exists():
+        with _USED_LOCK:
+            with used_path.open("r", encoding="utf-8") as f:
+                lines = f.readlines()
+            new_lines = [line for line in lines if line.strip() != str(index)]
+            if len(new_lines) != len(lines):
+                with used_path.open("w", encoding="utf-8") as f:
+                    f.writelines(new_lines)
+                logger.debug(f"[TRACK] Removed index {index} from used file")
+
+    # Remove from failed file
+    failed_path = Path(FAILED_EMU_FILE)
+    if failed_path.exists():
+        with _FAILED_LOCK:
+            with failed_path.open("r", encoding="utf-8") as f:
+                lines = f.readlines()
+            new_lines = [line for line in lines if line.strip() != str(index)]
+            if len(new_lines) != len(lines):
+                with failed_path.open("w", encoding="utf-8") as f:
+                    f.writelines(new_lines)
+                logger.debug(f"[TRACK] Removed index {index} from failed file")

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Set
 
 from ..auth.email_utils import generate_fresh_emails
 from ..config.config import BASE_NAME, BATCH_SIZE, MAX_EMULATORS, USED_ACCOUNTS_FILE
@@ -14,7 +14,11 @@ from ..core.emulator_tracking import (
 )
 from ..core.logger import log
 from .emulator_cycle import process_single_emulator
-from .list_emulators import close_emulators_in_parallel, start_and_wait_for_emulators
+from .list_emulators import (
+    close_emulators_in_parallel,
+    start_and_wait_for_emulators,
+    get_all_ldplayer_emulators,
+)
 from .split_apk_installer import install_apks_in_parallel
 
 
@@ -28,10 +32,16 @@ def get_next_batch() -> Tuple[List[int], bool]:
     logger.debug(f"[BATCH] Used indexes: {sorted(used_indexes)}")
     logger.debug(f"[BATCH] Failed indexes: {sorted(failed_indexes)}")
 
+    # Get all existing emulators once (fast)
+    existing_emus = get_all_ldplayer_emulators()
+    existing_indexes = {int(emu["index"]) for emu in existing_emus}
+
     batch: List[int] = []
     for idx in range(MAX_EMULATORS):
         if idx in used_indexes or idx in failed_indexes:
             continue
+        if idx not in existing_indexes:
+            continue  # skip if emulator does not exist
         batch.append(idx)
         if len(batch) == BATCH_SIZE:
             break
@@ -66,23 +76,29 @@ def get_statistics() -> Dict[str, int]:
     return stats
 
 
-def process_batch(batch_indexes: List[int], batch_number: int) -> bool:
+def process_batch(batch_indexes: List[int], batch_number: int) -> Tuple[bool, List[int]]:
+    """
+    Process a complete batch.
+    Returns:
+        - success flag (bool)
+        - list of newly launched emulators (indexes)
+    """
     logger.section(f"BATCH {batch_number}")
     logger.info(f"Processing emulators: {batch_indexes}")
 
     if not batch_indexes:
         logger.warning("[BATCH] No indexes provided")
-        return False
+        return False, []
 
     try:
         # STEP 1: Start emulators
         logger.step(1, "Starting emulators")
-        started_map = start_and_wait_for_emulators(batch_indexes)
+        started_map, newly_launched = start_and_wait_for_emulators(batch_indexes)
         started_indexes = [idx for idx, started in started_map.items() if started]
 
         if not started_indexes:
             logger.error("[BATCH] No emulators started successfully")
-            return False
+            return False, newly_launched
 
         logger.info(f"[BATCH] Started {len(started_indexes)}/{len(batch_indexes)} emulators: {started_indexes}")
 
@@ -92,7 +108,7 @@ def process_batch(batch_indexes: List[int], batch_number: int) -> bool:
 
         if not install_ok_indexes:
             logger.error("[BATCH] APK installation failed for all started emulators")
-            return False
+            return False, newly_launched
 
         logger.info(f"[BATCH] APK install successful on {len(install_ok_indexes)} emulators: {install_ok_indexes}")
 
@@ -143,7 +159,7 @@ def process_batch(batch_indexes: List[int], batch_number: int) -> bool:
                 save_failed_emulator_index(emulator_index)
                 logger.warning(f"[BATCH] Emulator {emulator_index} started but install failed, marked as failed")
 
-        # STEP 5: Close emulators
+        # STEP 5: Close emulators (we close only at the end of batch, not here – handled in cli)
         logger.step(5, "Closing emulators")
         close_emulators_in_parallel(batch_indexes)
 
@@ -154,7 +170,7 @@ def process_batch(batch_indexes: List[int], batch_number: int) -> bool:
         else:
             logger.fail(f"Batch {batch_number} completed with 0 successes")
 
-        return success_count > 0
+        return success_count > 0, newly_launched
 
     except Exception as exc:
         logger.error(f"[BATCH] Fatal error in batch {batch_number}: {exc}")
@@ -168,4 +184,4 @@ def process_batch(batch_indexes: List[int], batch_number: int) -> bool:
         except Exception as close_error:
             logger.error(f"[BATCH] Error while closing emulators: {close_error}")
 
-        return False
+        return False, []
