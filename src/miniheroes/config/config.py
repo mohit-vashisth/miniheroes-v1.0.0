@@ -69,6 +69,9 @@ def get_apk_paths() -> list[Path]:
 BATCH_SIZE = 4
 MAX_EMULATORS = 999
 
+# ==================== MODE ====================
+MODE = 2
+
 # ==================== BATCH CONFIG ====================
 DELETE_USED_EMULATORS = True
 IGNORED_EMULATORS = [0, 1]

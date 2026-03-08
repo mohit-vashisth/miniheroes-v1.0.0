@@ -21,7 +21,7 @@ def fetch_verification_code(
     mailbox: str,
     timeout_sec: int = 30,
     poll_interval: float = 1.0,
-    debug: bool = False,          # kept for compatibility but not used; log level controls detail
+    debug: bool = False,
     max_hard_reloads: int = 3,
 ) -> Optional[str]:
     local = mailbox.split("@")[0]
@@ -48,13 +48,13 @@ def fetch_verification_code(
                     logger.debug("[CODE] Page loaded on retry")
                 except PlaywrightTimeoutError:
                     logger.error("[CODE] Unable to load inbox page after retry")
-                    raise Exception("Unable to load inbox page (initial navigation timed out).")
+                    return None   # ← return None instead of raising
 
             while True:
                 elapsed = time.time() - start_ts
                 if elapsed > timeout_sec:
                     logger.error(f"[CODE] Timeout after {timeout_sec}s, no message found")
-                    raise Exception(f"No message/code found within {timeout_sec} seconds for {local}")
+                    return None   # ← return None on timeout
 
                 # Wait for a message element
                 try:

@@ -5,16 +5,27 @@ from typing import List
 
 from ..auth.email_utils import fetch_code_with_retry
 from ..auth.used_accounts_track import save_used_gmail
-from ..config.config import GAME_PACKAGE, LD_CONSOLE
+from ..config.config import GAME_PACKAGE, LD_CONSOLE, MODE
 from ..core.adb_utils import adb_tap, clear_app_data
 from ..core.logger import log
 from .split_apk_installer import is_app_installed, launch_app_e
-from .taps_info import adb_type
-from .taps_modes import MAIN_SEQUENCE, MODE1_STEPS
-from .taps_player import run_steps
-
+from .taps_modes import (
+    MAIN_SEQUENCE,
+    MAIN_SEQUENCE_MODE2,
+    MODE1_STEPS,
+    MODE2_STEPS,
+)
+from .taps_player import run_steps, run_steps_with_adb
 
 logger = log()
+
+# Decide which main sequence to use based on MODE
+if MODE == 1:
+    MAIN_SEQ = MAIN_SEQUENCE
+    STEPS_TEMPLATE = MODE1_STEPS
+else:
+    MAIN_SEQ = MAIN_SEQUENCE_MODE2
+    STEPS_TEMPLATE = MODE2_STEPS
 
 
 def _run_tap_sequence(device_id: str, taps: List[tuple]) -> bool:
@@ -32,41 +43,6 @@ def _run_tap_sequence(device_id: str, taps: List[tuple]) -> bool:
     return True
 
 
-def _run_steps_with_adb_fallback(device_id: str, steps: List[tuple]) -> bool:
-    """Execute steps with fallback handling"""
-    logger.debug(f"[STEPS] Running {len(steps)} steps on {device_id}")
-
-    for i, step in enumerate(steps, 1):
-        action = step[0]
-        logger.debug(f"[STEPS] Step {i}/{len(steps)}: {step}")
-
-        if action == "wait":
-            wait_seconds = float(step[1])
-            logger.debug(f"[STEPS] Wait {wait_seconds}s on {device_id}")
-            time.sleep(wait_seconds)
-            continue
-
-        if action == "text":
-            text = str(step[1])
-            logger.info(f"[TEXT] {device_id} - Typing: {text}")
-            adb_type(device_id, text)
-            continue
-
-        if action == "tap":
-            x = int(step[1])
-            y = int(step[2])
-            wait_seconds = float(step[3]) if len(step) > 3 else 0.0
-            logger.info(f"[TAP] {device_id} - Step tap at ({x}, {y}) - Wait {wait_seconds}s")
-            adb_tap(device_id, x, y, int(wait_seconds), LD_CONSOLE)
-            if wait_seconds > 0:
-                time.sleep(wait_seconds)
-            continue
-
-        logger.warning(f"[STEPS] Unknown step ignored: {step}")
-
-    return True
-
-
 def tap_player(port: int, email: str, run_number: int) -> bool:
     """Run the complete tap sequence for one account on one emulator"""
     device_id = f"emulator-{port}"
@@ -77,10 +53,10 @@ def tap_player(port: int, email: str, run_number: int) -> bool:
         logger.debug(f"[RUN {run_number}] Launching game on {device_id}")
         launch_app_e(device_id, GAME_PACKAGE)
 
-        # Process pre-code steps (everything before code entry)
+        # Process pre-code steps (everything before code entry) – using the selected template
         logger.debug(f"[RUN {run_number}] Processing pre-code steps")
         pre_code_steps: List[tuple] = []
-        for step in MODE1_STEPS:
+        for step in STEPS_TEMPLATE:
             if step[0] == "text" and len(step) > 1 and step[1] == "__CODE__":
                 break
             if step[0] == "text" and len(step) > 1 and step[1] == "__EMAIL__":
@@ -88,7 +64,7 @@ def tap_player(port: int, email: str, run_number: int) -> bool:
             else:
                 pre_code_steps.append(step)
 
-        _run_steps_with_adb_fallback(device_id, pre_code_steps)
+        run_steps_with_adb(device_id, pre_code_steps, LD_CONSOLE)
 
         # Fetch verification code
         logger.info(f"[RUN {run_number}] Waiting for verification code from {email}")
@@ -99,7 +75,7 @@ def tap_player(port: int, email: str, run_number: int) -> bool:
 
         logger.info(f"[RUN {run_number}] Got verification code: {code}")
 
-        # ✅ Mark email as used immediately to prevent reuse if script stops later
+        # Mark email as used immediately
         save_used_gmail(email)
         logger.info(f"[RUN {run_number}] Marked {email} as used")
 
@@ -107,12 +83,10 @@ def tap_player(port: int, email: str, run_number: int) -> bool:
         run_steps(device_id, [("text", code)], verbose=False)
         run_steps(device_id, [("wait", 2)], verbose=False)
 
-        # Execute main sequence
+        # Execute main sequence (selected based on MODE)
         logger.info(f"[RUN {run_number}] Executing main game sequence")
-        _run_tap_sequence(device_id, MAIN_SEQUENCE)
+        _run_tap_sequence(device_id, MAIN_SEQ)
 
-        # (Optional) second save – but duplicates are handled in save_used_gmail
-        # save_used_gmail(email)  # already saved above
         logger.success(f"Run {run_number} completed successfully on {device_id}")
         return True
 
