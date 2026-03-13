@@ -19,9 +19,9 @@ def process_one_account(device_id: str, email: str) -> bool:
     Handle one account on a fixed emulator:
     - launch game
     - enter email, fetch code, enter code
-    - run the full level‑up sequence (triple‑tapped)
+    - run the full level-up sequence (triple-tapped)
     - logout
-    - mark account as level‑35
+    - mark account as level-35
     """
     logger.info(f"[ACCOUNT] Starting {email} on {device_id}")
 

@@ -8,4 +8,4 @@ def create_emulators(count):
         subprocess.run([LDCONSOLE, "add"])
         print(f"LDPlayer-{i + 1} | Created")
 
-create_emulators(999)
+create_emulators(200)

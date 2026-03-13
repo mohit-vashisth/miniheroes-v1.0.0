@@ -69,7 +69,7 @@ def detect_running_emulator_indexes() -> List[int]:
     return indexes
 
 
-def adb_tap(device_id: str, x: int, y: int, t: int, console_path: str) -> bool:
+def adb_tap(device_id: str, x: int, y: int, t: float, console_path: str) -> bool:
     logger.debug(f"[TAP] {device_id} ({x},{y}) wait={t}s")
 
     emulator_index: Optional[int] = None

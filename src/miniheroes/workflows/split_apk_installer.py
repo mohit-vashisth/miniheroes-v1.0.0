@@ -6,7 +6,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import List
 
-from ..config.config import APK_FILES, APK_DIR, GAME_PACKAGE, get_apk_paths
+from ..config.config import APK_FILES, GAME_PACKAGE, get_apk_paths
 from ..core.logger import log
 from ..core.emulator_tracking import save_used_emulator_index   # <-- added import
 

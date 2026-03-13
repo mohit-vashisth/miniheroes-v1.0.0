@@ -64,7 +64,7 @@ def run_steps_with_adb(device_id: str, steps: List[tuple], console_path: str) ->
                 logger.info(f"[STEP {idx}] TAP ({x}, {y}) wait={wait_seconds}s on {device_id}")
             else:
                 logger.debug(f"[STEP {idx}] Quick TAP ({x}, {y}) on {device_id}")
-            adb_tap(device_id, x, y, int(wait_seconds), console_path)
+            adb_tap(device_id, x, y, wait_seconds, console_path)
             if wait_seconds > 0:
                 time.sleep(wait_seconds)
         elif action == "clear":

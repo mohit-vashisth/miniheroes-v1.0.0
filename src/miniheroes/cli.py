@@ -121,7 +121,7 @@ def main_loop():
                 time.sleep(60)
                 consecutive_failures = 0
 
-            # Wait before next batch
+            # Wait before    next batch
             wait_time = 20 if batch_number % 5 == 0 else 10
             logger.info(f"[WAITING] {wait_time} seconds before next batch...")
             time.sleep(wait_time)

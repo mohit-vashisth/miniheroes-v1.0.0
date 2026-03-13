@@ -18,7 +18,7 @@ from .workflows.list_emulators import (
 
 # The four fixed emulators that are already running (by port)
 # port 5560 -> index 3, 5562 -> 4, 5564 -> 5, 5566 -> 6
-FIXED_EMULATOR_INDEXES = [3, 4, 5, 6]
+FIXED_EMULATOR_INDEXES = [0, 1, 2, 3]
 EMULATOR_DEVICES = [f"emulator-{5554 + i*2}" for i in FIXED_EMULATOR_INDEXES]  # generates emulator-5560 etc.
 
 
@@ -92,12 +92,12 @@ def main():
                         completed += 1
                         logger.success(f"Account {email} done ({completed}/{total})")
                     else:
-                        logger.error(f"Account {email} failed")
+                        logger.error(f"{email} failed on {dev}")
                 except Exception as e:
                     logger.error(f"Account {email} threw exception: {e}")
 
         # Short pause between batches
-        time.sleep(5)
+        time.sleep(9)
 
     logger.success(f"[MODE2] All done! {completed}/{total} accounts reached level 35.")
 

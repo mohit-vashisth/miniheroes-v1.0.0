@@ -28,7 +28,7 @@ except Exception:
 ANDROID_W = 720
 ANDROID_H = 1280
 
-LDPLAYER_KEYWORDS = ["ldplayer", "a4"]
+LDPLAYER_KEYWORDS = ["ldplayer", "a1", "a2", "a3", "a4", "a"]
 DEBUG = "--debug" in sys.argv
 
 # ---------------- STATE ----------------

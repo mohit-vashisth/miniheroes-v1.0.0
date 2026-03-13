@@ -49,7 +49,7 @@ LOG_FILE = PROJECT_ROOT / "automation_log.txt"
 
 # ==================== GAME CONFIG ====================
 GAME_PACKAGE = "com.and.brawl.en"
-BASE_NAME = "318server"
+BASE_NAME = "323server"
 
 # ==================== APK FILES ====================
 APK_FILES = ["1.apk", "2.apk", "3.apk"]
@@ -70,11 +70,14 @@ BATCH_SIZE = 4
 MAX_EMULATORS = 999
 
 # ==================== MODE ====================
-MODE = 2
+MODE = 1
+
+# ==================== TAP REPEAT ====================
+TAP_REPEAT = 1
 
 # ==================== BATCH CONFIG ====================
 DELETE_USED_EMULATORS = True
-IGNORED_EMULATORS = [0, 1]
+IGNORED_EMULATORS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
 # ==================== TAP VERIFICATION ====================
 VERIFY_TAPS = False
