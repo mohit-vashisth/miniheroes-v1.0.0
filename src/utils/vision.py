@@ -7,7 +7,8 @@ import os
 import threading
 from typing import Tuple
 
-ADB_PATH = r"D:\LDPlayer\LDPlayer9\adb.exe"
+from src.config.config import ADB_PATH, CROPS_DIR
+
 _screencap_lock = threading.Lock()
 
 def _get_serial(index: int) -> str:
@@ -32,7 +33,7 @@ def _screencap(index: int) -> np.ndarray:
 
 def load_template(template_name: str) -> np.ndarray:
     """Load template from templates/crops/ as color (BGR)."""
-    path = os.path.join("templates", "crops", template_name)
+    path = os.path.join(CROPS_DIR, template_name)
     img = cv2.imread(path, cv2.IMREAD_COLOR)   # color
     if img is None:
         raise FileNotFoundError(f"Template not found: {path}")

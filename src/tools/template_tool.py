@@ -13,9 +13,7 @@ import numpy as np
 # ==========================================================
 
 ADB = r"D:\LDPlayer\LDPlayer9\adb.exe"
-
 ROOT = Path(__file__).resolve().parent.parent
-
 TEMPLATE_DIR = ROOT / "templates"
 CROP_DIR = TEMPLATE_DIR / "crops"
 JSON_FILE = TEMPLATE_DIR / "templates.json"
