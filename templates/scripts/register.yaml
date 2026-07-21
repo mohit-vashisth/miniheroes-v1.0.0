@@ -1,0 +1,520 @@
+steps:
+  - wait:
+      image: email_btn.png
+      retries: 3
+      confidence: 0.8
+
+  - tap:
+      image: email_btn.png
+      x: 352
+      y: 558
+      retries: 2
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: signup_btn.png
+      retries: 3
+
+  - tap:
+      image: signup_btn.png
+      x: 585
+      y: 774
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: email_field_btn.png
+
+  - tap:
+      image: email_field_btn.png
+      x: 136
+      y: 480
+
+  - type_email: {}
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: send_code.png
+
+  - tap:
+      image: send_code.png
+      x: 563
+      y: 580
+
+  - fetch_otp: {}
+
+  - wait:
+      image: code_field.png
+
+  - tap:
+      image: code_field.png
+      x: 138
+      y: 588
+
+  - type_otp: {}
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: signup_now.png
+
+  - tap:
+      image: signup_now.png
+      x: 359
+      y: 691
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: start_game_btn.png
+
+  - tap:
+      image: start_game_btn.png
+      x: 360
+      y: 1011
+
+  - sleep:
+      seconds: 8
+
+  - wait:
+      image: skip_intro.png
+
+  - tap:
+      image: skip_intro.png
+      x: 587
+      y: 1218
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: skip_intro.png
+  - tap:
+      image: skip_intro.png
+      x: 587
+      y: 1218
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: fire_sorceress.png
+
+  - tap:
+      image: fire_sorceress.png
+      x: 660
+      y: 642
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: mars.png
+
+  - tap:
+      image: mars.png
+      x: 675
+      y: 629
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: tap_here.png
+
+  - tap:
+      image: tap_here.png
+      x: 660
+      y: 637
+
+  - sleep:
+      seconds: 2
+
+  - wait:
+      image: start_attack_btn.png
+
+  - tap:
+      image: start_attack_btn.png
+      x: 365
+      y: 1209
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: speedup_btn.png
+
+  - tap:
+      image: speedup_btn.png
+      x: 660
+      y: 819
+
+  - sleep:
+      seconds: 13
+
+  - wait:
+      image: confirm_btn.png
+
+  - tap:
+      image: confirm_btn.png
+      x: 358
+      y: 934
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: mars.png
+
+  - tap:
+      image: mars.png
+      x: 675
+      y: 629
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: fire_sorceress.png
+
+  - tap:
+      image: fire_sorceress.png
+      x: 660
+      y: 642
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: tap_here.png
+
+  - tap:
+      image: tap_here.png
+      x: 658
+      y: 642
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: start_attack_btn.png
+
+  - tap:
+      image: start_attack_btn.png
+      x: 365
+      y: 1209
+
+  - sleep:
+      seconds: 13
+
+  - wait:
+      image: thats_awesome.png
+
+  - tap:
+      image: thats_awesome.png
+      x: 361
+      y: 1134
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: confirm_btn.png
+
+  - tap:
+      image: confirm_btn.png
+      x: 358
+      y: 934
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: snow_hunter.png
+
+  - tap:
+      image: snow_hunter.png
+      x: 470
+      y: 642
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: mars.png
+
+  - tap:
+      image: mars.png
+      x: 675
+      y: 629
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: snow_hunter.png
+
+  - tap:
+      image: snow_hunter.png
+      x: 470
+      y: 642
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: tap_on_loot.png
+
+  - tap:
+      image: tap_on_loot.png
+      x: 658
+      y: 974
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: claim_all_loot.png
+
+  - tap:
+      image: claim_all_loot.png
+      x: 497
+      y: 1058
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: congruts.png
+
+  - tap:
+      image: congruts.png
+      x: 378
+      y: 989
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: mars.png
+
+  - tap:
+      image: mars.png
+      x: 675
+      y: 629
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: hero_menu.png
+
+  - tap:
+      image: hero_menu.png
+      x: 183
+      y: 1166
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: levelup_hero.png
+
+  - tap:
+      image: levelup_hero.png
+      x: 367
+      y: 791
+
+  - sleep:
+      seconds: 1.4
+
+  - wait:
+      image: levelup_hero.png
+
+  - tap:
+      image: levelup_hero.png
+      x: 367
+      y: 791
+
+  - sleep:
+      seconds: 1.4
+
+  - wait:
+      image: levelup_hero.png
+
+  - tap:
+      image: levelup_hero.png
+      x: 367
+      y: 791
+
+  - sleep:
+      seconds: 1.4
+
+  - wait:
+      image: levelup_hero.png
+
+  - tap:
+      image: levelup_hero.png
+      x: 367
+      y: 791
+
+  - sleep:
+      seconds: 1.4
+
+  - wait:
+      image: levelup_hero.png
+
+  - tap:
+      image: levelup_hero.png
+      x: 367
+      y: 791
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: return_home.png
+
+  - tap:
+      image: return_home.png
+      x: 57
+      y: 1205
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: mars.png
+
+  - tap:
+      image: mars.png
+      x: 675
+      y: 629
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: fire_sorceress.png
+
+  - tap:
+      image: fire_sorceress.png
+      x: 660
+      y: 642
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: tap_here.png
+
+  - tap:
+      image: tap_here.png
+      x: 660
+      y: 637
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: snow_hunter.png
+
+  - tap:
+      image: snow_hunter.png
+      x: 470
+      y: 642
+
+  - sleep:
+      seconds: 2
+
+  - wait:
+      image: snow_hunter_hero_select.png
+
+  - tap:
+      image: snow_hunter_hero_select.png
+      x: 230
+      y: 844
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: start_attack_btn.png
+
+  - tap:
+      image: start_attack_btn.png
+      x: 365
+      y: 1209
+
+  - sleep:
+      seconds: 14
+
+  - wait:
+      image: confirm_btn.png
+
+  - tap:
+      image: confirm_btn.png
+      x: 358
+      y: 934
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: fire_sorceress.png
+
+  - tap:
+      image: fire_sorceress.png
+      x: 660
+      y: 642
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: claim_quest.png
+
+  - tap:
+      image: claim_quest.png
+      x: 542
+      y: 851
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: congruts.png
+
+  - tap:
+      image: congruts.png
+      x: 378
+      y: 989
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: mars.png
+
+  - tap:
+      image: mars.png
+      x: 675
+      y: 629
+
+  - sleep:
+      seconds: 1
+
+  - wait:
+      image: new_quest.png
+
+  - tap:
+      image: new_quest.png
+      x: 555
+      y: 851

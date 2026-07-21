@@ -1,0 +1,26 @@
+# LDPlayer Settings
+ldplayer:
+  console_path: "D:\\LDPlayer\\LDPlayer9\\ldconsole.exe"
+  adb_path: "D:\\LDPlayer\\LDPlayer9\\adb.exe"
+  install_dir: "D:\\LDPlayer\\LDPlayer9"
+
+emulator:
+  parallel_workers: 4
+
+game:
+  package: "com.and.brawl.en"
+  main_activity: "org.cocos2dx.javascript.AppActivity"
+  apk_files:
+    - "base1.apk"
+    - "base2.apk"
+    - "base3.apk"
+
+runs:
+  per_emulator: 4
+  launch_wait: 28
+
+maildrop:
+  domain: "maildrop.cc"
+  email_prefix: "newserver"
+  poll_interval: 3
+  headless: true
